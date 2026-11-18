@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="在浏览器本地清理 Word 剧本中英文台词后的中文括号翻译。">
+  <title>译净 · AI 短剧剧本处理器</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#"><span class="brand-mark">译</span><span>译净 <small>AI 短剧剧本处理器</small></span></a>
+    <span class="privacy"><i></i> 文件仅在本地浏览器处理</span>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div><span class="eyebrow">WORD 剧本清理工具 · MVP</span><h1>保留英文原句，<br><em>一键清理括号翻译</em></h1></div>
+      <p>面向中英双语短剧剧本，谨慎识别英文台词后的中文括号翻译，尽可能保留原文档的段落顺序与文字格式。</p>
+    </section>
+
+    <section class="workspace">
+      <div id="uploadCard" class="upload-card">
+        <input id="fileInput" type="file" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" hidden>
+        <div class="upload-icon">W</div>
+        <h2>上传 Word 剧本</h2>
+        <p>拖放 .docx 文件到这里，或点击下方选择文件</p>
+        <button id="chooseBtn" class="primary">选择 .docx 文件</button>
+        <div class="divider"><span>或者</span></div>
+        <a class="sample" href="examples/双语短剧测试样例.docx" download>下载示例测试文件 <span>↓</span></a>
+        <small>支持 .docx · 建议小于 20MB · 不会上传到服务器</small>
+      </div>
+
+      <div id="resultCard" class="result-card hidden">
+        <div class="file-row">
+          <div class="file-badge">W</div>
+          <div><strong id="fileName"></strong><span id="fileMeta"></span></div>
+          <button id="replaceBtn" class="text-btn">更换文件</button>
+        </div>
+        <div class="summary">
+          <div><span id="matchCount">0</span><small>处翻译已识别</small></div>
+          <div><span id="charCount">0</span><small>个字符将删除</small></div>
+          <div class="safe"><span>保守</span><small>识别策略</small></div>
+        </div>
+        <div class="tabs" role="tablist">
+          <button class="active" data-view="diff">差异对照</button>
+          <button data-view="before">处理前</button>
+          <button data-view="after">处理后</button>
+        </div>
+        <div id="preview" class="preview" aria-live="polite"></div>
+        <div class="actions">
+          <button id="downloadBtn" class="primary">下载处理后的 Word</button>
+          <button id="resetBtn" class="secondary">重新开始</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="how">
+      <h2>怎样判断“括号翻译”？</h2>
+      <p>第一版采用可解释的保守规则，只删除明确跟在英文台词后的中文括号内容。</p>
+      <div class="rules">
+        <article><b>01</b><h3>识别台词结构</h3><p>支持“人物名（情绪/动作）：英文台词（中文）”，并保留人物后的表演说明。</p></article>
+        <article><b>02</b><h3>排除非台词内容</h3><p>场景标题、动作说明、镜头描述及不确定段落一律保留。</p></article>
+        <article><b>03</b><h3>保留 Word 结构</h3><p>仅修改命中的文字节点，保留段落、样式、表格与图片等 OOXML 结构。</p></article>
+      </div>
+    </section>
+  </main>
+  <footer><span>译净 MVP · 本地处理，保护剧本隐私</span><span>识别结果请在下载前人工复核</span></footer>
+  <div id="toast" class="toast" role="status"></div>
+  <script src="vendor/jszip.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
